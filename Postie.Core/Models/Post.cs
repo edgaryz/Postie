@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Postie.Core.Models
 {
@@ -10,6 +11,8 @@ namespace Postie.Core.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateOnly CreationDate { get; set; }
+        [ForeignKey("Id")]
+        public User User { get; set; }
 
         public Post() { }
 

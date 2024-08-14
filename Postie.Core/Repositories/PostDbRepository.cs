@@ -8,7 +8,7 @@ namespace Postie.Core.Repositories
     {
         public async Task<List<Post>> GetAllPosts()
         {
-            using (var context = new PostDbContext())
+            using (var context = new MyDbContext())
             {
                 List<Post> allPosts = await context.Posts.ToListAsync();
                 return allPosts;
@@ -17,7 +17,7 @@ namespace Postie.Core.Repositories
 
         public async Task<Post> GetPostById(int id)
         {
-            using (var context = new PostDbContext())
+            using (var context = new MyDbContext())
             {
                 return await context.Posts.FindAsync(id);
             }
@@ -25,7 +25,7 @@ namespace Postie.Core.Repositories
 
         public async Task CreatePost(Post post)
         {
-            using (var context = new PostDbContext())
+            using (var context = new MyDbContext())
             {
                 await context.Posts.AddAsync(post);
                 await context.SaveChangesAsync();
@@ -34,7 +34,7 @@ namespace Postie.Core.Repositories
 
         public async Task UpdatePost(Post post)
         {
-            using (var context = new PostDbContext())
+            using (var context = new MyDbContext())
             {
                 await context.Posts
                     .Where(x => x.Id == post.Id)
@@ -50,7 +50,7 @@ namespace Postie.Core.Repositories
 
         public async Task DeletePost(int id)
         {
-            using (var context = new PostDbContext())
+            using (var context = new MyDbContext())
             {
                 context.Posts.Remove(await context.Posts.FindAsync(id));
                 await context.SaveChangesAsync();

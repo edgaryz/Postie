@@ -1,7 +1,10 @@
-﻿namespace Postie.Core.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Postie.Core.Models
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
 
