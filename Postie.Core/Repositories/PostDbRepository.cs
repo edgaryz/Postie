@@ -45,26 +45,8 @@ namespace Postie.Core.Repositories
         {
             using (var context = new MyDbContext())
             {
-                try
-                {
-                    await context.Posts
-                        .Where(x => x.Id == post.Id)
-                        .ExecuteUpdateAsync(x => x
-                            .SetProperty(y => y.Author, post.Author)
-                            .SetProperty(y => y.Title, post.Title)
-                            .SetProperty(y => y.Content, post.Content)
-                            .SetProperty(y => y.CreationDate, post.CreationDate)
-                            //.SetProperty(y => y.User, post.User)
-                            .SetProperty(y => y.User.Id, post.User.Id)
-                            //.SetProperty(y => y.User.Name, post.User.Name)
-                            //.SetProperty(y => y.User.Email, post.User.Email)
-                            );
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    ex = ex;
-                }
+                context.Posts.Update(post);
+                await context.SaveChangesAsync();
             }
         }
 
