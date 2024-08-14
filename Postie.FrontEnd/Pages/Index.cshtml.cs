@@ -8,8 +8,8 @@ namespace Postie.FrontEnd.Pages
     public class IndexModel : PageModel
 
     {
-        private readonly IBusinessLogicService _businessLogicService;
-        List<Post> allPosts;
+        public readonly IBusinessLogicService _businessLogicService;
+        public List<Post> allPosts;
 
         public IndexModel (IBusinessLogicService businessLogicService)
         {

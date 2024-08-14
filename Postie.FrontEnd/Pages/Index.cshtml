@@ -1,8 +1,10 @@
 ﻿@page
 @using Postie.Core.Models
+@using Postie.Core.Contracts;
 @model Postie.FrontEnd.Pages.IndexModel
 @{
     ViewData["Title"] = "Home page";
+    Layout = "Shared/_Layout";
 }
 
 <div class="header-text">
@@ -53,15 +55,16 @@
 </div>
 
 <div class="list-group">
-    @foreach (Post post in Model.)
+    @foreach (Post post in Model.allPosts)
     {
+        //TO DO DATE COUNTING  <small>3 days ago</small>
         <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">Name</h5>
-                <h5 class="mb-1">Title</h5>
+                <h5 class="mb-1">@post.User.Name</h5>
+                <h5 class="mb-1">@post.Title</h5>
                 <small>3 days ago</small>
             </div>
-            <p class="mb-1">Some content.<p>
+            <p class="mb-1">@post.Content<p>
         </span>
     }
 </div>
