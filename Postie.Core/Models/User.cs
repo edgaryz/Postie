@@ -11,6 +11,11 @@ namespace Postie.Core.Models
 
         public User() { }
 
+        public User(int id)
+        {
+            Id = id;
+        }
+
         public User(string name, string email)
         {
             Name = name;
