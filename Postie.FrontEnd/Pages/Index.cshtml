@@ -4,7 +4,60 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="header-text">
+    <h1></h1>
+</div>
+
+
+<div class="post-form">
+    <div class="post-text">
+        Make a Post!
+    </div>
+    <form action="#" class="custom-form">
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" id="name" name="name" required>
+                <div class="underline"></div>
+                <label for="">Name</label>
+            </div>
+            <div class="input-data">
+                <input type="email" id="email" name="email" required>
+                <div class="underline"></div>
+                <label for="">Email Address</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" id="title" name="title" required>
+                <div class="underline"></div>
+                <label for="">Title</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data textarea">
+                <textarea rows="8" cols="80" id="content" name="content" required></textarea>
+                <br />
+                <div class="underline"></div>
+                <label for="">Write your message</label>
+                <br />
+                <div class="form-row submit-btn">
+                    <div class="input-data">
+                        <div class="inner"></div>
+                        <input type="submit" value="submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="list-group">
+    <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">Name</h5>
+            <h5 class="mb-1">Title</h5>
+            <small>3 days ago</small>
+        </div>
+        <p class="mb-1">Some content.<p>
+    </span>
 </div>
