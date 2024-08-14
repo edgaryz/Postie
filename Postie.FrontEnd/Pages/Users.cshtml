@@ -1,0 +1,48 @@
+﻿@page
+@model Postie.FrontEnd.Pages.UsersModel
+@{
+    ViewData["Title"] = "Users";
+    Layout = "Shared/_Layout";
+}
+
+<div class="post-form">
+    <div class="post-text">
+        Login to see your posts!
+    </div>
+    <form action="#" class="custom-form">
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" id="name" name="name" required>
+                <div class="underline"></div>
+                <label for="">Name</label>
+            </div>
+            <div class="input-data">
+                <input type="email" id="email" name="email" required>
+                <div class="underline"></div>
+                <label for="">Email Address</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data">
+                <input type="text" id="title" name="title" required>
+                <div class="underline"></div>
+                <label for="">Title</label>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="input-data textarea">
+                <textarea rows="8" cols="80" id="content" name="content" required></textarea>
+                <br />
+                <div class="underline"></div>
+                <label for="">Write your message</label>
+                <br />
+                <div class="form-row submit-btn">
+                    <div class="input-data">
+                        <div class="inner"></div>
+                        <input type="submit" value="submit">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
