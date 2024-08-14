@@ -2,7 +2,7 @@
 
 namespace Postie.Core.Contracts
 {
-    public interface IPostService
+    public interface IPostRepository
     {
         Task<List<Post>> GetAllPosts();
         Task<Post> GetPostById(int id);

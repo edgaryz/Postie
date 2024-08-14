@@ -5,9 +5,9 @@ namespace Postie.Core.Services
 {
     public class BusinessLogicService : IBusinessLogicService
     {
-        public readonly IPostService _postService;
+        public readonly IPostRepository _postService;
         public readonly IUserService _userService;
-        public BusinessLogicService(IPostService postService, IUserService userService)
+        public BusinessLogicService(IPostRepository postService, IUserService userService)
         {
             _postService = postService;
             _userService = userService;

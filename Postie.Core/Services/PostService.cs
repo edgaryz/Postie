@@ -3,12 +3,14 @@ using Postie.Core.Models;
 
 namespace Postie.Core.Services
 {
-    public class PostService : IPostService
+    public class PostService : IPostRepository
     {
         public readonly IPostDbRepository _postDbRepository;
-        public PostService(IPostDbRepository postDbRepository)
+        public readonly IUserService _userService;
+        public PostService(IPostDbRepository postDbRepository, IUserService userService)
         {
             _postDbRepository = postDbRepository;
+            _userService = userService;
         }
 
         public async Task<List<Post>> GetAllPosts()
@@ -23,6 +25,8 @@ namespace Postie.Core.Services
 
         public async Task CreatePost(Post post)
         {
+            var user = await _userService.GetUserById(post.User.Id);
+            post.User = user;
             await _postDbRepository.CreatePost(post);
         }
 
