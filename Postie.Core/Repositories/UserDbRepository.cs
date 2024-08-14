@@ -38,7 +38,8 @@ namespace Postie.Core.Repositories
                 await context.Users
                     .Where(x => x.Id == user.Id)
                     .ExecuteUpdateAsync(x => x
-                        .SetProperty(y => y.Name, user.Name));
+                        .SetProperty(y => y.Name, user.Name)
+                        .SetProperty(y => y.Email, user.Email));
                 await context.SaveChangesAsync();
             }
         }

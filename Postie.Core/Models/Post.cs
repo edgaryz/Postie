@@ -11,7 +11,7 @@ namespace Postie.Core.Models
         public string Title { get; set; }
         public string Content { get; set; }
         public DateOnly CreationDate { get; set; }
-        [ForeignKey("Id")]
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
         public Post() { }
