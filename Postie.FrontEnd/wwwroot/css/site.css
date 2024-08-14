@@ -28,7 +28,6 @@ html {
 
 body {
     min-height: 100vh;
-    padding: 10px;
     font-family: 'Poppins', sans-serif;
     background: linear-gradient(115deg, #56d8e4 10%, #9f01ea 90%);
 }
@@ -110,7 +109,7 @@ body {
 
 .input-data .underline {
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
     height: 2px;
     width: 100%;
 }
@@ -221,7 +220,7 @@ h1 {
 
 @keyframes abomination1 {
     0% {
-        content: "W";
+        content: "W_";
     }
 
     6% {
@@ -229,66 +228,78 @@ h1 {
     }
 
     12% {
-        content: "Wel";
+        content: "Wel_";
     }
 
-    15% {
+    18% {
         content: "Welc";
     }
 
-    20% {
-        content: "Welco";
-    }
-
-    25% {
-        content: "Welcom";
+    24% {
+        content: "Welco_";
     }
 
     30% {
-        content: "Welcome";
+        content: "Welcom";
     }
 
-    35% {
+    36% {
+        content: "Welcome_";
+    }
+
+    42% {
         content: "Welcome ";
     }
 
-    40% {
-        content: "Welcome T";
+    48% {
+        content: "Welcome T_";
     }
 
-    45% {
+    54% {
         content: "Welcome To";
     }
 
-    50% {
-        content: "Welcome To ";
+    60% {
+        content: "Welcome To _";
     }
 
-    55% {
+    66% {
         content: "Welcome To P";
     }
 
-    60% {
-        content: "Welcome To Po";
+    72% {
+        content: "Welcome To Po_";
     }
 
-    65% {
+    78% {
         content: "Welcome To Pos";
     }
 
-    70% {
-        content: "Welcome To Post";
-    }
-
-    80% {
-        content: "Welcome To Posti";
+    84% {
+        content: "Welcome To Post_";
     }
 
     90% {
-        content: "Welcome To Postie";
+        content: "Welcome To Posti";
+    }
+
+    95% {
+        content: "Welcome To Postie_";
     }
 
     100% {
         content: "Welcome To Postie!";
     }
+}
+
+/* Lists */
+
+.list-group {
+    width: 800px;
+    margin: 0 auto;
+    padding-top:10rem;
+}
+
+.list-item-custom{
+    margin: 1rem 0 1rem 0;
 }
