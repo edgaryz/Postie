@@ -1,20 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Postie.Core.Contracts;
+using Postie.Core.Models;
 
 namespace Postie.FrontEnd.Pages
 {
     public class IndexModel : PageModel
-    {
-        private readonly ILogger<IndexModel> _logger;
 
-        public IndexModel(ILogger<IndexModel> logger)
+    {
+        private readonly IBusinessLogicService _businessLogicService;
+        List<Post> allPosts;
+
+        public IndexModel (IBusinessLogicService businessLogicService)
         {
-            _logger = logger;
+            _businessLogicService = businessLogicService;
         }
 
-        public void OnGet()
+        public async Task OnGet()
         {
-
+            allPosts = await _businessLogicService.GetAllPosts();
         }
     }
 }

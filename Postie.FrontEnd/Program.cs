@@ -1,7 +1,18 @@
+using Postie.Core.Contracts;
+using Postie.Core.Repositories;
+using Postie.Core.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddTransient<IPostDbRepository, PostDbRepository>(_ => new PostDbRepository());
+builder.Services.AddTransient<IUserDbRepository, UserDbRepository>(_ => new UserDbRepository());
+//Services
+builder.Services.AddTransient<IBusinessLogicService, BusinessLogicService>();
+builder.Services.AddTransient<IPostRepository, PostService>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

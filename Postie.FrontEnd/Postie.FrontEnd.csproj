@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Postie.API\Postie.API.csproj" />
+    <ProjectReference Include="..\Postie.Core\Postie.Core.csproj" />
   </ItemGroup>
 
 </Project>
