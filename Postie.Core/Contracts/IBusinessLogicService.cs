@@ -14,5 +14,6 @@ namespace Postie.Core.Contracts
         Task CreateUser(User user);
         Task UpdateUser(User user);
         Task DeleteUser(int id);
+        Task<User> GetUserByEmail(string email);
     }
 }

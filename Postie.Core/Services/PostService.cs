@@ -25,7 +25,17 @@ namespace Postie.Core.Services
 
         public async Task CreatePost(Post post)
         {
-            var user = await _userService.GetUserById(post.User.Id);
+            var user = await _userService.GetUserByEmail(post.User.Email);
+            if(user == null)
+            {
+                user = new User
+                {
+                    Name = post.User.Name,
+                    Email = post.User.Email
+                };
+                await _userService.CreateUser(user);
+            }
+
             post.User = user;
             await _postDbRepository.CreatePost(post);
         }

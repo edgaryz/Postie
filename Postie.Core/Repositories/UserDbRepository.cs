@@ -53,5 +53,12 @@ namespace Postie.Core.Repositories
             }
         }
 
+        public async Task<User> GetUserByEmail(string email)
+        {
+            using (var context = new MyDbContext())
+            {
+                return await context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            }
+        }
     }
 }

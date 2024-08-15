@@ -65,5 +65,9 @@ namespace Postie.Core.Services
             await _userService.DeleteUser(id);
         }
 
+        public async Task<User> GetUserByEmail(string email)
+        {
+            return await _userService.GetUserByEmail(email);
+        }
     }
 }

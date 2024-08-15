@@ -21,8 +21,9 @@ namespace Postie.API.Controllers
                 var allPosts = await _businessLogicService.GetAllPosts();
                 return Ok(allPosts);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
         }
@@ -35,8 +36,9 @@ namespace Postie.API.Controllers
                 var post = await _businessLogicService.GetPostById(id);
                 return Ok(post);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
         }
@@ -49,8 +51,15 @@ namespace Postie.API.Controllers
                 await _businessLogicService.CreatePost(post);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error while creating a post: {ex.Message}");
+
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+
                 return Problem();
             }
         }
@@ -63,8 +72,9 @@ namespace Postie.API.Controllers
                 await _businessLogicService.UpdatePost(post);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Error while updating the post: ", ex.Message);
                 return Problem();
             }
         }
@@ -77,8 +87,9 @@ namespace Postie.API.Controllers
                 await _businessLogicService.DeletePost(id);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("Error while deeling the post: ", ex.Message);
                 return NotFound();
             }
         }
@@ -92,8 +103,9 @@ namespace Postie.API.Controllers
                 var allUsers = await _businessLogicService.GetAllUsers();
                 return Ok(allUsers);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
         }
@@ -106,8 +118,9 @@ namespace Postie.API.Controllers
                 var user = await _businessLogicService.GetUserById(id);
                 return Ok(user);
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return NotFound();
             }
         }
@@ -120,8 +133,9 @@ namespace Postie.API.Controllers
                 await _businessLogicService.CreateUser(user);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return Problem();
             }
         }
@@ -134,8 +148,9 @@ namespace Postie.API.Controllers
                 await _businessLogicService.UpdateUser(user);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return Problem();
             }
         }

@@ -62,17 +62,33 @@
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">@post.User.Name</h5>
                 <h5 class="mb-1">@post.Title</h5>
-                <small>3 days ago</small>
+                <small>@post.CreationDate</small>
             </div>
-            <p class="mb-1">@post.Content<p>
+            <p class="mb-1">@post.Content</p>
         </span>
     }
 </div>
 
 <script>
     function sendPostData(endpoint, formData, method = "POST") {
-        const plainFormData = Object.fromEntries(formData.entries());
-        const jsonString = JSON.stringify(plainFormData);
+        const postData = {
+            title: formData.get("title"),
+            content: formData.get("content"),
+            creationDate: {
+                year: new Date().getFullYear(),
+                month: new Date().getMonth() + 1,
+                day: new Date().getDate(),
+            },
+            user: {
+                name: formData.get("name"),
+                email: formData.get("email"),
+            }
+        };
+
+        console.log(postData);
+
+        const jsonString = JSON.stringify(postData);
+
         fetch(endpoint, {
             method: method,
             body: jsonString,
