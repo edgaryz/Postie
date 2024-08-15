@@ -19,9 +19,9 @@ namespace Postie.Core.Services
             return await _postService.GetAllPosts();
         }
 
-        public async Task<Post> GetPostById(int id)
+        public async Task<List<Post>> GetPostsByUser(User user)
         {
-            return await _postService.GetPostById(id);
+            return await _postService.GetPostsByUser(user);
         }
 
         public async Task CreatePost(Post post)

@@ -13,7 +13,7 @@ namespace Postie.API.Controllers
         }
 
         //Posts
-        [HttpGet("GetAllPosts")]
+        [HttpPost("GetAllPosts")]
         public async Task<IActionResult> GetAllPosts()
         {
             try
@@ -28,12 +28,12 @@ namespace Postie.API.Controllers
             }
         }
 
-        [HttpGet("GetPostById")]
-        public async Task<IActionResult> GetPostById(int id)
+        [HttpPost("GetPostsByUser")]
+        public async Task<IActionResult> GetPostsByUser([FromBody] User user)
         {
             try
             {
-                var post = await _businessLogicService.GetPostById(id);
+                var post = await _businessLogicService.GetPostsByUser(user);
                 return Ok(post);
             }
             catch (Exception ex)

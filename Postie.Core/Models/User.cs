@@ -11,20 +11,8 @@ namespace Postie.Core.Models
 
         public User() { }
 
-        public User(int id)
-        {
-            Id = id;
-        }
-
         public User(string name, string email)
         {
-            Name = name;
-            Email = email;
-        }
-
-        public User(int id, string name, string email)
-        {
-            Id = id;
             Name = name;
             Email = email;
         }

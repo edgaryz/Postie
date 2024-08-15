@@ -20,14 +20,11 @@ namespace Postie.Core.Repositories
             }
         }
 
-        public async Task<Post> GetPostById(int id)
+        public async Task<List<Post>> GetPostsByUser(User user)
         {
             using (var context = new MyDbContext())
             {
-                //to display User as object in return
-                var post = await context.Posts.FindAsync(id);
-                context.Entry(post).Reference(x => x.User).Load();
-                return post;
+                return await context.Posts.Where(p => p.User.Email == user.Email && p.User.Name == user.Name).ToListAsync();
             }
         }
 

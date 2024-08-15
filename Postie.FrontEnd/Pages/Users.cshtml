@@ -1,4 +1,6 @@
 ﻿@page
+@using Postie.Core.Models
+@using Postie.Core.Contracts;
 @model Postie.FrontEnd.Pages.UsersModel
 @{
     ViewData["Title"] = "Users";
@@ -9,7 +11,7 @@
     <div class="post-text">
         Login to see your posts!
     </div>
-    <form action="#" class="custom-form">
+    <form action="#" class="custom-form" id="loginForm">
         <div class="form-row">
             <div class="input-data">
                 <input type="text" id="name" name="name" required>
@@ -33,14 +35,89 @@
 </div>
 
 <div class="list-group">
-    <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
-        <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Name</h5>
-            <h5 class="mb-1">Title</h5>
-            <small>3 days ago</small>
-        </div>
-        <p class="mb-1">Some content.</p>
-    </span>
 
-    <button class="noselect"><span class="text">Delete post</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+@if (Model.AllPostsByUser != null && Model.AllPostsByUser.Any())
+    {
+        @foreach (Post post in Model.AllPostsByUser)
+        {
+            <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@post.User.Name</h5>
+                    <h5 class="mb-1">@post.Title</h5>
+                    <small>@post.CreationDate</small>
+                </div>
+                <p class="mb-1">@post.Content</p>
+            </span>
+
+            <button class="noselect"><span class="text">Delete post</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span></button>
+        }
+    }
+    else
+    {
+        <p>It's kinda lonely here...</p>
+    }
 </div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+
+        const user = {
+            Name: name,
+            Email: email
+        };
+
+        try {
+            const response = await fetch('https://localhost:7019/GetPostsByUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(user)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch posts');
+            }
+
+            const posts = await response.json();
+            console.log(posts);
+
+            const listGroup = document.querySelector('.list-group');
+            listGroup.innerHTML = '';
+
+            if (posts.length === 0) {
+                listGroup.innerHTML = `<p>It's kinda lonely here...</p>`;
+                return;
+            }
+
+            posts.forEach(post => {
+                const postElement = document.createElement('span');
+                postElement.className = 'list-group-item list-group-item-action flex-column align-items-start list-item-custom';
+                postElement.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">${user.Name}</h5>
+                        <h5 class="mb-1">${post.title}</h5>
+                        <small>${new Date(post.creationDate).toLocaleDateString()}</small>
+                    </div>
+                    <p class="mb-1">${post.content}</p>
+                `;
+
+                listGroup.appendChild(postElement);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = "noselect";
+                deleteButton.innerHTML = `<span class="text">Delete post</span><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path></svg></span>`;
+                listGroup.appendChild(deleteButton);
+            });
+
+
+
+        } catch (error) {
+            console.error(error.message);
+        }
+    });
+</script>
