@@ -71,14 +71,12 @@
 
 <script>
     function sendPostData(endpoint, formData, method = "POST") {
+        const dateNow = new Date();
+        const formattedDate = dateNow.toISOString().split('T')[0];
         const postData = {
             title: formData.get("title"),
             content: formData.get("content"),
-            creationDate: {
-                year: new Date().getFullYear(),
-                month: new Date().getMonth() + 1,
-                day: new Date().getDate(),
-            },
+            creationDate: formattedDate,
             user: {
                 name: formData.get("name"),
                 email: formData.get("email"),
