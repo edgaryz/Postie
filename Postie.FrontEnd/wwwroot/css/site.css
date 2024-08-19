@@ -307,7 +307,7 @@ h1 {
 
 /* Delete button */
 
-button {
+.noselect {
     width: 150px;
     height: 50px;
     cursor: pointer;
@@ -320,50 +320,99 @@ button {
     background: #e62222;
 }
 
-    button, button span {
-        transition: 200ms;
+.noselect, .noselect span {
+    transition: 200ms;
+}
+
+    .noselect .text {
+        transform: translateX(14px);
+        color: white;
+        font-weight: bold;
     }
 
-        button .text {
-            transform: translateX(14px);
-            color: white;
-            font-weight: bold;
+    .noselect .icon {
+        position: absolute;
+        border-left: 1px solid #c41b1b;
+        transform: translateX(110px);
+        height: 40px;
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .noselect svg {
+        width: 15px;
+        fill: #eee;
+    }
+
+    .noselect:hover {
+        background: #ff3636;
+    }
+
+        .noselect:hover .text {
+            color: transparent;
         }
 
-        button .icon {
-            position: absolute;
-            border-left: 1px solid #c41b1b;
-            transform: translateX(110px);
-            height: 40px;
-            width: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .noselect:hover .icon {
+            width: 150px;
+            border-left: none;
+            transform: translateX(0);
         }
 
-        button svg {
-            width: 15px;
-            fill: #eee;
-        }
+    .noselect:focus {
+        outline: none;
+    }
 
-        button:hover {
-            background: #ff3636;
-        }
+    .noselect:active .icon svg {
+        transform: scale(0.8);
+    }
 
-            button:hover .text {
-                color: transparent;
-            }
+.button-64 {
+    align-items: center;
+    background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-family: Phantomsans, sans-serif;
+    font-size: 20px;
+    justify-content: center;
+    line-height: 13px;
+    max-width: 100%;
+    min-width: 140px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+}
 
-            button:hover .icon {
-                width: 150px;
-                border-left: none;
-                transform: translateX(0);
-            }
+.button-64:active,
+.button-64:hover {
+    outline: 0;
+}
 
-        button:focus {
-            outline: none;
-        }
+.button-64 span {
+    background-color: rgb(5, 6, 45);
+    padding: 16px 24px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+}
 
-        button:active .icon svg {
-            transform: scale(0.8);
-        }
+.button-64:hover span {
+    background: none;
+}
+
+@media (min-width: 768px) {
+    .button-64 {
+        font-size: 21px;
+        min-width: 164px;
+    }
+}
