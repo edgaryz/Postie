@@ -29,9 +29,9 @@ namespace Postie.Core.Services
             await _postService.CreatePost(post);
         }
 
-        public async Task UpdatePost(Post post)
+        public async Task UpdatePost(int id, Post updatedPost)
         {
-            await _postService.UpdatePost(post);
+            await _postService.UpdatePost(id, updatedPost);
         }
 
         public async Task DeletePost(int id)

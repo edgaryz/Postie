@@ -40,9 +40,9 @@ namespace Postie.Core.Services
             await _postDbRepository.CreatePost(post);
         }
 
-        public async Task UpdatePost(Post post)
+        public async Task UpdatePost(int id, Post updatedPost)
         {
-            await _postDbRepository.UpdatePost(post);
+            await _postDbRepository.UpdatePost(id, updatedPost);
         }
 
         public async Task DeletePost(int id)

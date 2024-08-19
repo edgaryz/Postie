@@ -64,13 +64,18 @@ namespace Postie.API.Controllers
             }
         }
 
-        [HttpPut("UpdatePost")]
-        public async Task<IActionResult> UpdatePost([FromBody] Post post)
+        [HttpPatch("UpdatePost/{id}")]
+        public async Task<IActionResult> UpdatePost(int id, [FromBody] Post updatedPost)
         {
             try
             {
-                await _businessLogicService.UpdatePost(post);
+                await _businessLogicService.UpdatePost(id, updatedPost);
                 return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine("Error while updating the post: ", ex.Message);
+                return NotFound();
             }
             catch (Exception ex)
             {

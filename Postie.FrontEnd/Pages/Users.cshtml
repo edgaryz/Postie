@@ -36,6 +36,33 @@
 
 <div class="list-group"></div>
 
+<div class="modal fade" id="editPostModal" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPostForm">
+                    <div class="form-group">
+                        <label for="edit-title" class="col-form-label">Title:</label>
+                        <input type="text" class="form-control" id="edit-title">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-content" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="edit-content"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     document
         .getElementById("loginForm")
@@ -79,15 +106,15 @@
                     postElement.className =
                         "list-group-item list-group-item-action flex-column align-items-start list-item-custom";
                     postElement.innerHTML = `
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">${user.Name}</h5>
-                        <h5 class="mb-1">${post.title}</h5>
-                        <small>${new Date(
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">${user.Name}</h5>
+                    <h5 class="mb-1">${post.title}</h5>
+                    <small>${new Date(
                         post.creationDate
                     ).toLocaleDateString()}</small>
-                    </div>
-                    <p class="mb-1">${post.content}</p>
-                `;
+                </div>
+                <p class="mb-1">${post.content}</p>
+            `;
 
                     listGroup.appendChild(postElement);
 
@@ -98,6 +125,11 @@
 
                     const editButton = document.createElement("button");
                     editButton.className = "button-64";
+                    editButton.setAttribute("data-bs-toggle", "modal");
+                    editButton.setAttribute("data-bs-target", "#editPostModal");
+                    editButton.dataset.id = post.id;
+                    editButton.dataset.title = post.title;
+                    editButton.dataset.content = post.content;
                     editButton.innerHTML = '<span class="text">Edit post</span>';
 
                     const buttonBox = document.createElement("div");
@@ -112,17 +144,22 @@
                         console.log(deleteId);
 
                         try {
-                            const resp = await fetch(`https://localhost:7019/DeletePost/${deleteId}`, {
-                                method: "DELETE",
-                                headers: {
-                                    Accept: "application/json",
-                                    "Content-Type": "application/json",
-                                },
-                            });
+                            const resp = await fetch(
+                                `https://localhost:7019/DeletePost/${deleteId}`,
+                                {
+                                    method: "DELETE",
+                                    headers: {
+                                        Accept: "application/json",
+                                        "Content-Type": "application/json",
+                                    },
+                                }
+                            );
 
                             if (!resp.ok) {
                                 const text = await resp.text();
-                                throw new Error(`Network response was not ok: ${resp.statusText}. Response body: ${text}`);
+                                throw new Error(
+                                    `Network response was not ok: ${resp.statusText}. Response body: ${text}`
+                                );
                             }
 
                             alert("Post successfully deleted!");
@@ -130,6 +167,52 @@
                         } catch (error) {
                             console.error("There was a problem with fetch operation: ", error);
                         }
+                    });
+
+                    editButton.addEventListener("click", function () {
+                        const postId = this.dataset.id;
+                        const postTitle = this.dataset.title;
+                        const postContent = this.dataset.content;
+
+                        document.getElementById("edit-title").value = postTitle;
+                        document.getElementById("edit-content").value = postContent;
+
+                        document.getElementById("saveChangesButton").onclick =
+                            async function () {
+                                const updatedTitle = document.getElementById("edit-title").value;
+                                const updatedContent =
+                                    document.getElementById("edit-content").value;
+
+                                try {
+                                    const resp = await fetch(
+                                        `https://localhost:7019/UpdatePost/${postId}`,
+                                        {
+                                            method: "PATCH",
+                                            headers: {
+                                                "Content-Type": "application/json",
+                                            },
+                                            body: JSON.stringify({
+                                                title: updatedTitle,
+                                                content: updatedContent,
+                                            }),
+                                        }
+                                    );
+                                    if (!resp.ok) {
+                                        const text = await resp.text();
+                                        throw new Error(
+                                            `Network response was not ok: ${resp.statusText}. Response body: ${text}`
+                                        );
+                                    }
+
+                                    alert("Post successfully updated!");
+                                    window.location.href = "/Users";
+                                } catch (error) {
+                                    console.error(
+                                        "There was a problem with fetch operation ",
+                                        error
+                                    );
+                                }
+                            };
                     });
                 });
             } catch (error) {

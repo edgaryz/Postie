@@ -38,12 +38,22 @@ namespace Postie.Core.Repositories
             }
         }
 
-        public async Task UpdatePost(Post post)
+        public async Task UpdatePost(int id, Post updatedPost)
         {
             using (var context = new MyDbContext())
             {
-                context.Posts.Update(post);
-                await context.SaveChangesAsync();
+                var existingPost = await context.Posts.FindAsync(id);
+                if (existingPost != null)
+                {
+                    existingPost.Title = updatedPost.Title;
+                    existingPost.Content = updatedPost.Content;
+
+                    await context.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new ArgumentException("Post not found");
+                }
             }
         }
 
