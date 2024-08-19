@@ -89,7 +89,7 @@ namespace Postie.API.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error while deeling the post: ", ex.Message);
+                Console.WriteLine("Error while deleting the post: ", ex.Message);
                 return NotFound();
             }
         }
