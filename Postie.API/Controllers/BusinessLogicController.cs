@@ -13,7 +13,7 @@ namespace Postie.API.Controllers
         }
 
         //Posts
-        [HttpPost("GetAllPosts")]
+        [HttpGet("GetAllPosts")]
         public async Task<IActionResult> GetAllPosts()
         {
             try
@@ -99,12 +99,12 @@ namespace Postie.API.Controllers
             }
         }
 
-        [HttpGet("GetPostsByTitleOrContent")]
-        public async Task<IActionResult> GetPostsByTitleOrContent(string title = null, string content = null)
+        [HttpGet("GetPostsByTitleOrContent/{searchContent}")]
+        public async Task<IActionResult> GetPostsByTitleOrContent(string searchContent = null)
         {
             try
             {
-                var postByTitleOrContent = await _businessLogicService.GetPostsByTitleOrContent(title, content);
+                var postByTitleOrContent = await _businessLogicService.GetPostsByTitleOrContent(searchContent);
                 return Ok(postByTitleOrContent);
             }
             catch (Exception ex)

@@ -72,11 +72,11 @@ namespace Postie.Core.Repositories
             }
         }
 
-        public async Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null)
+        public async Task<List<Post>> GetPostsByTitleOrContent(string searchContent = null)
         {
             using (var context = new MyDbContext())
             {
-                var resultList = await context.Posts.Where(p => p.Title.Contains(title) || p.Content.Contains(content)).ToListAsync();
+                var resultList = await context.Posts.Where(p => p.Title.Contains(searchContent) || p.Content.Contains(searchContent)).ToListAsync();
                 //to display User as object in return
                 foreach (var post in resultList)
                 {

@@ -40,9 +40,9 @@ namespace Postie.Core.Services
             await _postService.DeletePost(id);
         }
 
-        public async Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null)
+        public async Task<List<Post>> GetPostsByTitleOrContent(string searchContent = null)
         {
-            return await _postService.GetPostsByTitleOrContent(title, content);
+            return await _postService.GetPostsByTitleOrContent(searchContent);
         }
 
         //User

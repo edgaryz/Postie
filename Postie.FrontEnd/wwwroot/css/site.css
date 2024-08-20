@@ -298,7 +298,7 @@ h1 {
 .list-group {
     width: 800px;
     margin: 0 auto;
-    padding-top:10rem;
+    padding-top:1rem;
 }
 
 .list-item-custom{
@@ -424,8 +424,7 @@ h1 {
     padding: 4px;
     border-radius: 5px;
     width: 30rem;
-    margin: 0 auto;
-    margin: 2rem auto;
+    margin: 10rem auto 0 auto;
 }
 
 .search-1 {
