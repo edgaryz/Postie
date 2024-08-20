@@ -69,7 +69,20 @@
 </div>
 
 <div id="status-message">Loading posts...</div>
-<div class="list-group"></div>
+<div class="list-group">
+    @foreach (Post post in Model.allPosts)
+    {
+        //TO DO DATE COUNTING  <small>3 days ago</small>
+        <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
+            <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">@post.User.Name</h5>
+                <h5 class="mb-1">@post.Title</h5>
+                <small>@post.CreationDate</small>
+            </div>
+            <p class="mb-1">@post.Content</p>
+        </span>
+    }
+</div>
 <div id="status-message">Loading posts...</div>
 
 
@@ -156,7 +169,7 @@
         if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
             pageNumber++;
             loadPosts(document.getElementById("search-bar").value.trim());
-        }-
+        }
     }
 
     function sendPostData(endpoint, formData, method = "POST") {
