@@ -68,7 +68,7 @@
     </div>
 </div>
 
-<div id="status-message">Loading posts...</div>
+<div class="statusText" id="status-message">Loading posts...</div>
 <div class="list-group">
     @foreach (Post post in Model.allPosts)
     {
@@ -83,7 +83,7 @@
         </span>
     }
 </div>
-<div id="status-message">Loading posts...</div>
+<div class="statusText" id="status-message2">Loading posts...</div>
 
 
 <script>
@@ -93,8 +93,9 @@
     let loadedPostsCount = 0;
     const listGroup = document.querySelector(".list-group");
     const statusMessage = document.querySelector("#status-message");
+    const statusMessage2 = document.querySelector("#status-message2");
 
-    async function loadPosts(query = '') {
+    async function loadPosts(query = '', isSearch = false) {
         try {
             const response = await fetch(
                 `https://localhost:7019/GetPosts?pageNumber=${pageNumber}&pageSize=${pageSize}&query=${encodeURIComponent(query)}`,
@@ -114,8 +115,9 @@
             const posts = data.posts;
             totalPostsCount = data.totalCount;
 
-            if (pageNumber === 1) {
-                listGroup.innerHTML = ""; // Clear previous posts on initial load
+            if (isSearch || pageNumber === 1) {
+                listGroup.innerHTML = ""; // Clear previous posts on new search or initial load
+                loadedPostsCount = 0; // Reset loaded posts count
             }
 
             if (posts.length === 0 && pageNumber === 1) {
@@ -135,15 +137,16 @@
                         </div>
                         <p class="mb-1">${post.content}</p>
                     `;
-
                 listGroup.appendChild(postElement);
             });
 
             loadedPostsCount += posts.length;
             statusMessage.innerHTML = `Loaded ${loadedPostsCount} of ${totalPostsCount} posts`;
+            statusMessage2.innerHTML = `Loaded ${loadedPostsCount} of ${totalPostsCount} posts`;
 
             if (loadedPostsCount >= totalPostsCount) {
                 statusMessage.innerHTML = "All posts loaded.";
+                statusMessage2.innerHTML = "All posts loaded.";
                 window.removeEventListener("scroll", onScroll); // Remove scroll event listener if all posts are loaded
             }
         } catch (error) {
@@ -157,9 +160,9 @@
         document.getElementById("search-button").addEventListener("click", () => {
             const query = document.getElementById("search-bar").value.trim();
             pageNumber = 1; // Reset page number for new search
-            loadedPostsCount = 0; // Reset loaded posts count
             statusMessage.innerHTML = "Loading posts...";
-            loadPosts(query); // Load posts based on search query
+            statusMessage2.innerHTML = "Loading posts...";
+            loadPosts(query, true); // Load posts based on search query, indicate search mode
         });
 
         window.addEventListener("scroll", onScroll);

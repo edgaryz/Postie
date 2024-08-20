@@ -518,3 +518,9 @@ h1 {
         top: 5px
     }
 }
+
+.statusText
+{
+    display: flex;
+    justify-content: center;
+}
