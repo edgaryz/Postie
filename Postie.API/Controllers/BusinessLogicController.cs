@@ -99,6 +99,21 @@ namespace Postie.API.Controllers
             }
         }
 
+        [HttpGet("GetPostsByTitleOrContent")]
+        public async Task<IActionResult> GetPostsByTitleOrContent(string title = null, string content = null)
+        {
+            try
+            {
+                var postByTitleOrContent = await _businessLogicService.GetPostsByTitleOrContent(title, content);
+                return Ok(postByTitleOrContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return NotFound();
+            }
+        }
+
         //Users
         [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAllUsers()

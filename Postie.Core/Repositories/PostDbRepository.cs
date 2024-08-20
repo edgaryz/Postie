@@ -24,7 +24,13 @@ namespace Postie.Core.Repositories
         {
             using (var context = new MyDbContext())
             {
-                return await context.Posts.Where(p => p.User.Email == user.Email && p.User.Name == user.Name).ToListAsync();
+                var resultList = await context.Posts.Where(p => p.User.Email == user.Email && p.User.Name == user.Name).ToListAsync();
+                //to display User as object in return
+                foreach (var post in resultList)
+                {
+                    context.Entry(post).Reference(x => x.User).Load();
+                }
+                return resultList;
             }
         }
 
@@ -63,6 +69,20 @@ namespace Postie.Core.Repositories
             {
                 context.Posts.Remove(await context.Posts.FindAsync(id));
                 await context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null)
+        {
+            using (var context = new MyDbContext())
+            {
+                var resultList = await context.Posts.Where(p => p.Title.Contains(title) || p.Content.Contains(content)).ToListAsync();
+                //to display User as object in return
+                foreach (var post in resultList)
+                {
+                    context.Entry(post).Reference(x => x.User).Load();
+                }
+                return resultList;
             }
         }
     }

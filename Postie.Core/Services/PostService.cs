@@ -49,5 +49,15 @@ namespace Postie.Core.Services
         {
             await _postDbRepository.DeletePost(id);
         }
+
+        public async Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null)
+        {
+            if(title == null && content == null)
+            {
+                return await _postDbRepository.GetAllPosts();
+            }
+
+            return await _postDbRepository.GetPostsByTitleOrContent(title, content);
+        }
     }
 }

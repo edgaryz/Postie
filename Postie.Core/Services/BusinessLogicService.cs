@@ -1,5 +1,6 @@
 ﻿using Postie.Core.Contracts;
 using Postie.Core.Models;
+using Postie.Core.Repositories;
 
 namespace Postie.Core.Services
 {
@@ -37,6 +38,11 @@ namespace Postie.Core.Services
         public async Task DeletePost(int id)
         {
             await _postService.DeletePost(id);
+        }
+
+        public async Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null)
+        {
+            return await _postService.GetPostsByTitleOrContent(title, content);
         }
 
         //User

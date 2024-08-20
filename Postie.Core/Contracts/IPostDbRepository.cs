@@ -9,5 +9,6 @@ namespace Postie.Core.Contracts
         Task CreatePost(Post post);
         Task UpdatePost(int id, Post updatedPost);
         Task DeletePost(int id);
+        Task<List<Post>> GetPostsByTitleOrContent(string title = null, string content = null);
     }
 }
