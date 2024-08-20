@@ -1,4 +1,5 @@
 ﻿using Postie.Core.Contracts;
+using Postie.Core.Enums;
 using Postie.Core.Models;
 
 namespace Postie.Core.Services
@@ -68,6 +69,11 @@ namespace Postie.Core.Services
             }
 
             return await _postDbRepository.GetPostsByTitleOrContent(searchContent);
+        }
+
+        public async Task<List<Post>> GetPostsByCategory(Category category)
+        {
+            return await _postDbRepository.GetPostsByCategory(category);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Postie.Core.Contracts;
+using Postie.Core.Enums;
 using Postie.Core.Models;
 
 namespace Postie.Core.Repositories
@@ -99,6 +100,20 @@ namespace Postie.Core.Repositories
             using (var context = new MyDbContext())
             {
                 var resultList = await context.Posts.Where(p => p.Title.Contains(searchContent) || p.Content.Contains(searchContent)).ToListAsync();
+                //to display User as object in return
+                foreach (var post in resultList)
+                {
+                    context.Entry(post).Reference(x => x.User).Load();
+                }
+                return resultList;
+            }
+        }
+
+        public async Task<List<Post>> GetPostsByCategory(Category category)
+        {
+            using (var context = new MyDbContext())
+            {
+                var resultList = await context.Posts.Where(p => p.Category == category).ToListAsync();
                 //to display User as object in return
                 foreach (var post in resultList)
                 {

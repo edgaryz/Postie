@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Postie.Core.Contracts;
+using Postie.Core.Enums;
 using Postie.Core.Models;
 
 namespace Postie.API.Controllers
@@ -121,6 +122,21 @@ namespace Postie.API.Controllers
             try
             {
                 var postByTitleOrContent = await _businessLogicService.GetPostsByTitleOrContent(searchContent);
+                return Ok(postByTitleOrContent);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return NotFound();
+            }
+        }
+
+        [HttpGet("GetPostsByCategory/{category}")]
+        public async Task<IActionResult> GetPostsByCategory(Category category)
+        {
+            try
+            {
+                var postByTitleOrContent = await _businessLogicService.GetPostsByCategory(category);
                 return Ok(postByTitleOrContent);
             }
             catch (Exception ex)

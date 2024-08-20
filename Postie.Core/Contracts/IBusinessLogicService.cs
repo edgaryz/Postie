@@ -1,4 +1,5 @@
-﻿using Postie.Core.Models;
+﻿using Postie.Core.Enums;
+using Postie.Core.Models;
 
 namespace Postie.Core.Contracts
 {
@@ -18,5 +19,6 @@ namespace Postie.Core.Contracts
         Task<User> GetUserByEmail(string email);
         Task<List<Post>> GetPagedPosts(int pageNumber, int pageSize);
         Task<int> GetTotalPostsCount();
+        Task<List<Post>> GetPostsByCategory(Category category);
     }
 }
