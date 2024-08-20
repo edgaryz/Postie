@@ -31,7 +31,20 @@
                 </div>
             </div>
     </form>
+</div>
 
+<div class="search">
+    <div class="row">
+        <div class="col">
+            <div>
+                <div class="search-2">
+                    <i class="bx bxs-map"></i>
+                    <input type="text" id="search-bar" placeholder="Enter title or message" />
+                    <button id="search-button">Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="list-group"></div>
@@ -213,6 +226,74 @@
                                     );
                                 }
                             };
+                    });
+
+                    document.getElementById("search-button").addEventListener("click", function () {
+                        const query = document.getElementById("search-bar").value.trim();
+
+                        if (query == "") {
+                            alert("Please enter a search term");
+                            return;
+                        }
+
+                        try {
+                            const response = await fetch('', {
+                                method: "GET",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                },
+                                body: JSON.stringify({ query: query }),
+                            });
+
+                            if (!response.ok) {
+                                throw new Error("Failed to fetch results.");
+                            }
+
+                            const posts = await response.json();
+
+                            const listGroup = document.querySelector(".list-group");
+                            listGroup.innerHTML = "";
+
+                            if (post.length === 0) { 
+                                listGroup.innerHTML = `<p>It's lonely here...</p>`;
+                                return;
+                            }
+
+                            posts.forEach((post) => {
+                                const postElement = document.createElement("span");
+                                postElement.className =
+                                    "list-group-item list-group-item-action flex-column align-items-start list-item-custom";
+                                postElement.innerHTML = `
+                                <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${user.Name}</h5>
+                                <h5 class="mb-1">${post.title}</h5>
+                                <small>${new Date(post.creationDate).toLocaleDateString()}</small>
+                                </div>
+                                <p class="mb-1">${post.content}</p>
+                                `;
+
+                                listGroup.appendChild(postElement);
+
+                                const editButton = document.createElement("button");
+                                editButton.className = "button-64";
+                                editButton.setAttribute("data-bs-toggle", "modal");
+                                editButton.setAttribute("data-bs-target", "#editPostModal");
+                                editButton.dataset.id = post.id;
+                                editButton.dataset.title = post.title;
+                                editButton.dataset.content = post.content;
+                                editButton.innerHTML = '<span class="text">Edit post</span>';
+
+                                const buttonBox = document.createElement("div");
+                                buttonBox.className = "d-flex flex-row justify-content-between";
+                                buttonBox.appendChild(editButton);
+                                buttonBox.appendChild(deleteButton);
+
+                                listGroup.appendChild(buttonBox);
+                            });
+                        }   catch (error)
+                        {
+                            console.error("Error during search: ", error);
+                        }
                     });
                 });
             } catch (error) {
