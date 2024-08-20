@@ -20,6 +20,28 @@ namespace Postie.Core.Repositories
             }
         }
 
+        public async Task<List<Post>> GetPagedPosts(int pageNumber, int pageSize)
+        {
+            using (var context = new MyDbContext())
+            {
+                var posts = await context.Posts.OrderBy(p => p.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+
+                foreach (var post in posts)
+                {
+                    context.Entry(post).Reference(x => x.User).Load();
+                }
+                return posts;
+            }
+        }
+
+        public async Task<int> GetTotalPostsCount()
+        {
+            using (var context = new MyDbContext())
+            {
+                return await context.Posts.CountAsync();
+            }
+        }
+
         public async Task<List<Post>> GetPostsByUser(User user)
         {
             using (var context = new MyDbContext())

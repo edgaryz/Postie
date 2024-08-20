@@ -68,22 +68,97 @@
     </div>
 </div>
 
-<div class="list-group">
-    @foreach (Post post in Model.allPosts)
-    {
-        //TO DO DATE COUNTING  <small>3 days ago</small>
-        <span class="list-group-item list-group-item-action flex-column align-items-start list-item-custom">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@post.User.Name</h5>
-                <h5 class="mb-1">@post.Title</h5>
-                <small>@post.CreationDate</small>
-            </div>
-            <p class="mb-1">@post.Content</p>
-        </span>
-    }
-</div>
+<div id="status-message">Loading posts...</div>
+<div class="list-group"></div>
+<div id="status-message">Loading posts...</div>
+
 
 <script>
+    let pageNumber = 1;
+    const pageSize = 5;
+    let totalPostsCount = 0;
+    let loadedPostsCount = 0;
+    const listGroup = document.querySelector(".list-group");
+    const statusMessage = document.querySelector("#status-message");
+
+    async function loadPosts(query = '') {
+        try {
+            const response = await fetch(
+                `https://localhost:7019/GetPosts?pageNumber=${pageNumber}&pageSize=${pageSize}&query=${encodeURIComponent(query)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept: "application/json",
+                    },
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch posts.");
+            }
+
+            const data = await response.json();
+            const posts = data.posts;
+            totalPostsCount = data.totalCount;
+
+            if (pageNumber === 1) {
+                listGroup.innerHTML = ""; // Clear previous posts on initial load
+            }
+
+            if (posts.length === 0 && pageNumber === 1) {
+                listGroup.innerHTML = `<p>It's lonely here...</p>`;
+                return;
+            }
+
+            posts.forEach((post) => {
+                const postElement = document.createElement("span");
+                postElement.className =
+                    "list-group-item list-group-item-action flex-column align-items-start list-item-custom";
+                postElement.innerHTML = `
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">${post.user.name}</h5>
+                            <h5 class="mb-1">${post.title}</h5>
+                            <small>${new Date(post.creationDate).toLocaleDateString()}</small>
+                        </div>
+                        <p class="mb-1">${post.content}</p>
+                    `;
+
+                listGroup.appendChild(postElement);
+            });
+
+            loadedPostsCount += posts.length;
+            statusMessage.innerHTML = `Loaded ${loadedPostsCount} of ${totalPostsCount} posts`;
+
+            if (loadedPostsCount >= totalPostsCount) {
+                statusMessage.innerHTML = "All posts loaded.";
+                window.removeEventListener("scroll", onScroll); // Remove scroll event listener if all posts are loaded
+            }
+        } catch (error) {
+            console.error("Error during posts loading: ", error);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        loadPosts(); // Load the initial set of posts
+
+        document.getElementById("search-button").addEventListener("click", () => {
+            const query = document.getElementById("search-bar").value.trim();
+            pageNumber = 1; // Reset page number for new search
+            loadedPostsCount = 0; // Reset loaded posts count
+            statusMessage.innerHTML = "Loading posts...";
+            loadPosts(query); // Load posts based on search query
+        });
+
+        window.addEventListener("scroll", onScroll);
+    });
+
+    function onScroll() {
+        if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight) {
+            pageNumber++;
+            loadPosts(document.getElementById("search-bar").value.trim());
+        }-
+    }
+
     function sendPostData(endpoint, formData, method = "POST") {
         const dateNow = new Date();
         const formattedDate = dateNow.toISOString().split("T")[0];
@@ -136,155 +211,5 @@
             const endpoint = "https://localhost:7019/CreatePost";
             const formData = new FormData(this);
             sendPostData(endpoint, formData);
-        });
-
-    document
-        .getElementById("search-button")
-        .addEventListener("click", async function () {
-            const query = document.getElementById("search-bar").value.trim();
-            const endpoint = query ? `https://localhost:7019/GetPostsByTitleOrContent/${encodeURIComponent(query)}` : "https://localhost:7019/GetAllPosts";
-
-            try {
-                const response = await fetch(
-                    endpoint,
-                    {
-                        method: "GET",
-                        headers: {
-                            Accept: "application/json",
-                        },
-                    });
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch results.");
-                }
-
-                const posts = await response.json();
-
-                const listGroup = document.querySelector(".list-group");
-                listGroup.innerHTML = "";
-
-                if (posts.length === 0) {
-                    listGroup.innerHTML = `<p>It's lonely here...</p>`;
-                    return;
-                }
-
-                posts.forEach((post) => {
-                    const postElement = document.createElement("span");
-                    postElement.className =
-                        "list-group-item list-group-item-action flex-column align-items-start list-item-custom";
-                    postElement.innerHTML = `
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">${post.user.name}</h5>
-                                <h5 class="mb-1">${post.title}</h5>
-                                <small>${new Date(post.creationDate).toLocaleDateString()}</small>
-                            </div>
-                            <p class="mb-1">${post.content}</p>
-                        `;
-
-                    listGroup.appendChild(postElement);
-
-                    const deleteButton = document.createElement("button");
-                    deleteButton.className = "noselect";
-                    deleteButton.dataset.id = post.id;
-                    deleteButton.innerHTML = `
-                            <span class="text">Delete post</span>
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                                    <path d="M24 20.188l-8.315-8.209 8.2-8.282-3.697-3.697-8.212 8.318-8.31-8.203-3.666 3.666 8.321 8.24-8.206 8.313 3.666 3.666 8.237-8.318 8.285 8.203z"></path>
-                                </svg>
-                            </span>
-                        `;
-
-                    const editButton = document.createElement("button");
-                    editButton.className = "button-64";
-                    editButton.setAttribute("data-bs-toggle", "modal");
-                    editButton.setAttribute("data-bs-target", "#editPostModal");
-                    editButton.dataset.id = post.id;
-                    editButton.dataset.title = post.title;
-                    editButton.dataset.content = post.content;
-                    editButton.innerHTML = '<span class="text">Edit post</span>';
-
-                    const buttonBox = document.createElement("div");
-                    buttonBox.className = "d-flex flex-row justify-content-between";
-                    buttonBox.appendChild(editButton);
-                    buttonBox.appendChild(deleteButton);
-
-                    listGroup.appendChild(buttonBox);
-
-                    deleteButton.addEventListener("click", async function () {
-                        const deleteId = this.dataset.id;
-                        console.log(deleteId);
-
-                        try {
-                            const resp = await fetch(
-                                `https://localhost:7019/DeletePost/${deleteId}`,
-                                {
-                                    method: "DELETE",
-                                    headers: {
-                                        Accept: "application/json",
-                                        "Content-Type": "application/json",
-                                    },
-                                }
-                            );
-
-                            if (!resp.ok) {
-                                const text = await resp.text();
-                                throw new Error(
-                                    `Network response was not ok: ${resp.statusText}. Response body: ${text}`
-                                );
-                            }
-
-                            alert("Post successfully deleted!");
-                            window.location.href = "/Index";
-                        } catch (error) {
-                            console.error("There was a problem with fetch operation: ", error);
-                        }
-                    });
-
-                    editButton.addEventListener("click", function () {
-                        const postId = this.dataset.id;
-                        const postTitle = this.dataset.title;
-                        const postContent = this.dataset.content;
-
-                        document.getElementById("edit-title").value = postTitle;
-                        document.getElementById("edit-content").value = postContent;
-
-                        document.getElementById("saveChangesButton").onclick =
-                            async function () {
-                                const updatedTitle = document.getElementById("edit-title").value;
-                                const updatedContent = document.getElementById("edit-content").value;
-
-                                try {
-                                    const resp = await fetch(
-                                        `https://localhost:7019/UpdatePost/${postId}`,
-                                        {
-                                            method: "PATCH",
-                                            headers: {
-                                                "Content-Type": "application/json",
-                                            },
-                                            body: JSON.stringify({
-                                                title: updatedTitle,
-                                                content: updatedContent,
-                                            }),
-                                        }
-                                    );
-                                    if (!resp.ok) {
-                                        const text = await resp.text();
-                                        throw new Error(
-                                            `Network response was not ok: ${resp.statusText}. Response body: ${text}`
-                                        );
-                                    }
-
-                                    alert("Post successfully updated!");
-                                    window.location.href = "/Index";
-                                } catch (error) {
-                                    console.error("There was a problem with fetch operation: ", error);
-                                }
-                            };
-                    });
-                });
-            } catch (error) {
-                console.error("Error during search: ", error);
-            }
         });
 </script>

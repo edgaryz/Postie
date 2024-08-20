@@ -20,6 +20,16 @@ namespace Postie.Core.Services
             return await _postService.GetAllPosts();
         }
 
+        public async Task<List<Post>> GetPagedPosts(int pageNumber, int pageSize)
+        {
+            return await _postService.GetPagedPosts(pageNumber, pageSize);
+        }
+
+        public async Task<int> GetTotalPostsCount()
+        {
+            return await _postService.GetTotalPostsCount();
+        }
+
         public async Task<List<Post>> GetPostsByUser(User user)
         {
             return await _postService.GetPostsByUser(user);

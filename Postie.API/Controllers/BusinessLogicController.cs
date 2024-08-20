@@ -28,6 +28,22 @@ namespace Postie.API.Controllers
             }
         }
 
+        [HttpGet("GetPosts")]
+        public async Task<IActionResult> GetPosts(int pageNumber = 1, int pageSize = 5)
+        {
+            try
+            {
+                var pagedPosts = await _businessLogicService.GetPagedPosts(pageNumber, pageSize);
+                var totalPostsCount = await _businessLogicService.GetTotalPostsCount();
+                return Ok(new { posts = pagedPosts, totalCount = totalPostsCount });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, "Enternal server error");
+            }
+        }
+
         [HttpPost("GetPostsByUser")]
         public async Task<IActionResult> GetPostsByUser([FromBody] User user)
         {

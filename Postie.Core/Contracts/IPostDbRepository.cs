@@ -10,5 +10,7 @@ namespace Postie.Core.Contracts
         Task UpdatePost(int id, Post updatedPost);
         Task DeletePost(int id);
         Task<List<Post>> GetPostsByTitleOrContent(string searchContent = null);
+        Task<List<Post>> GetPagedPosts(int pageNumber, int pageSize);
+        Task<int> GetTotalPostsCount();
     }
 }

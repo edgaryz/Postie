@@ -16,5 +16,7 @@ namespace Postie.Core.Contracts
         Task UpdateUser(User user);
         Task DeleteUser(int id);
         Task<User> GetUserByEmail(string email);
+        Task<List<Post>> GetPagedPosts(int pageNumber, int pageSize);
+        Task<int> GetTotalPostsCount();
     }
 }
